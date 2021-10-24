@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    {% set stocks = get_stocks() %}
+    <select id="stocks" name="symbol" form="stock_form">
+        {% for stock in stocks %}
+        <option value= {{ stock.stock }}> {{ stock.stock }} </option>
+        {% endfor %}
+    </select>
+    <form id="stock_form" action="/sell" method="post" class="padded">
+        <div class="form-group">
+            <input class="form-control" name="shares" placeholder="Number of shares" type="number" min="0" step="1">
+        </div>
+        <button class="btn btn-primary" type="submit">Sell</button>
+    </form>
+{% endblock %}

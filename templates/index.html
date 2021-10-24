@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Symbol</th>
+      <th scope="col">Name</th>
+      <th scope="col">Shares</th>
+      <th scope="col">Price</th>
+      <th scope="col">Total</th>
+      <th scope="col">Profit / Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% set holdings = get_holdings() %}
+    {% for holding in holdings.rows %}
+      <tr>
+        <td>{{ holding.symbol }}</td>
+        <td>{{ holding.name }}</td>
+        <td>{{ holding.shares }}</td>
+        <td>{{ usd(holding.price) }}</td>
+        <td>{{ usd(holding.total) }}</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+    <tr>
+      <th scope="row">CASH</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{{ usd(get_cash()) }}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      {% set grand_total = holdings.total + get_cash() %}
+      <td>{{ usd(grand_total) }}</td>
+      {% if grand_total >= 10000 %}
+        <td class="green">{{ usd(grand_total - 10000) }}</td>
+      {% else %}
+        <td class="red">{{ usd(grand_total - 10000) }}</td>
+      {% endif %}
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
